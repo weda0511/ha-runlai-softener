@@ -157,6 +157,13 @@ class RunlaiSensor(CoordinatorEntity, SensorEntity):
         # 阀位转中文
         if self.entity_description.std_field == STD_STATION:
             return STATION_LABELS.get(val, "位置%s" % val)
+        # 时间戳类: 云端返回 ISO 字符串, 需转 datetime
+        if self.entity_description.device_class == SensorDeviceClass.TIMESTAMP:
+            try:
+                from datetime import datetime
+                return datetime.fromisoformat(str(val).replace("Z", "+00:00"))
+            except ValueError:
+                return None
         return val
 
     @property
