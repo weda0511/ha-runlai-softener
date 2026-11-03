@@ -107,6 +107,12 @@ class RunlaiClient:
             kwargs["json"] = json_body
         async with self._session.request(method, API_BASE + path, **kwargs) as resp:
             text = await resp.text()
+            if resp.status >= 400:
+                _LOGGER.error(
+                    "润莱请求失败: %s %s%s -> HTTP %s | headers=%s | body=%s",
+                    method, resp.url.host, resp.url.path_qs, resp.status,
+                    dict(resp.headers), text[:300],
+                )
             if resp.status == 429:
                 raise UpdateFailed("接口限流(429), 服务器要求稍后重试")
             if resp.status in (401, 403):
