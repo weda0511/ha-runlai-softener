@@ -18,16 +18,16 @@ from . import RunlaiCoordinator
 from .const import BINARY_FIELDS, DOMAIN
 
 DEVICE_CLASS_MAP = {
-    "salt_shortage_alarm": BinarySensorDeviceClass.PROBLEM,
-    "salt_shortage_reminder": BinarySensorDeviceClass.PROBLEM,
-    "resin_replacement_reminder": BinarySensorDeviceClass.PROBLEM,
-    "filter_material_reminder": BinarySensorDeviceClass.PROBLEM,
-    "water_leakage": BinarySensorDeviceClass.MOISTURE,
-    "vacation_pattern": None,
-    "clock_chip_fault": BinarySensorDeviceClass.PROBLEM,
-    "memory_error_fault": BinarySensorDeviceClass.PROBLEM,
-    "multiple_position_signal_fault": BinarySensorDeviceClass.PROBLEM,
-    "no_position_signal_fault": BinarySensorDeviceClass.PROBLEM,
+    "saltShortageAlarm": BinarySensorDeviceClass.PROBLEM,
+    "saltShortageReminder": BinarySensorDeviceClass.PROBLEM,
+    "resinReplacementReminder": BinarySensorDeviceClass.PROBLEM,
+    "filterMaterialReminder": BinarySensorDeviceClass.PROBLEM,
+    "waterLeakage": BinarySensorDeviceClass.MOISTURE,
+    "vacationPattern": None,
+    "clockChipFault": BinarySensorDeviceClass.PROBLEM,
+    "memoryErrorFault": BinarySensorDeviceClass.PROBLEM,
+    "multiplePositionSignalFault": BinarySensorDeviceClass.PROBLEM,
+    "noPositionSignalFault": BinarySensorDeviceClass.PROBLEM,
 }
 
 
