@@ -61,12 +61,16 @@ SENSOR_DESCRIPTIONS: tuple[SoftenerSensorDescription, ...] = (
     SoftenerSensorDescription(
         key="daily_water_consumption", std_field=STD_DAILY,
         name="今日用水", icon="mdi:water",
-        state_class=SensorStateClass.MEASUREMENT, native_unit_of_measurement="m³",
+        device_class=SensorDeviceClass.WATER,
+        state_class=SensorStateClass.TOTAL_INCREASING,
+        native_unit_of_measurement="m³",
     ),
     SoftenerSensorDescription(
         key="month_water", std_field=STD_MONTH_THIS,
         name="本月用水", icon="mdi:calendar-month",
-        state_class=SensorStateClass.MEASUREMENT, native_unit_of_measurement="m³",
+        device_class=SensorDeviceClass.WATER,
+        state_class=SensorStateClass.TOTAL_INCREASING,
+        native_unit_of_measurement="m³",
     ),
     SoftenerSensorDescription(
         key="last_month_water", std_field=STD_MONTH_LAST,

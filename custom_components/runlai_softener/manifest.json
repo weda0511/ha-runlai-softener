@@ -1,7 +1,7 @@
 {
   "domain": "runlai_softener",
   "name": "润莱智联软水机",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "documentation": "https://github.com/weda0511/ha-runlai-softener",
   "codeowners": ["@weda0511"],
   "config_flow": true,
