@@ -93,13 +93,16 @@ class RunlaiClient:
         self, method: str, path: str, *, params: dict | None = None,
         json_body: dict | None = None, _retry: bool = True,
     ) -> Any:
-        """带 token 的请求; 401 自动重新登录一次."""
+        """带 token 的请求; 无 token 先登录; 401/403/302 自动重新登录一次."""
+        if self._token is None:
+            await self._login()
         headers = {"Accept": "application/json"}
         if self._token:
             headers["Authorization"] = "Bearer " + self._token
         kwargs: dict[str, Any] = {
             "headers": headers,
             "timeout": aiohttp.ClientTimeout(total=25),
+            "allow_redirects": False,
         }
         if params:
             kwargs["params"] = params
@@ -112,6 +115,20 @@ class RunlaiClient:
                     "润莱请求失败: %s %s%s -> HTTP %s | headers=%s | body=%s",
                     method, resp.url.host, resp.url.path_qs, resp.status,
                     dict(resp.headers), text[:300],
+                )
+            # 服务器对未认证请求返回 302 到 /Account/Login, 与 401 同等处理
+            if resp.status in (301, 302, 307, 308):
+                if _retry:
+                    _LOGGER.warning(
+                        "接口被重定向(%s -> %s), token 失效, 自动重新登录",
+                        resp.status, resp.headers.get("Location", "")[:120],
+                    )
+                    self._token = None
+                    return await self.request(
+                        method, path, params=params, json_body=json_body, _retry=False
+                    )
+                raise ConfigEntryAuthFailed(
+                    "接口持续重定向(%s), 认证失效" % resp.headers.get("Location", "")[:80]
                 )
             if resp.status == 429:
                 raise UpdateFailed("接口限流(429), 服务器要求稍后重试")
