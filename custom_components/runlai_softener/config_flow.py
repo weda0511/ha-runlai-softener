@@ -86,10 +86,13 @@ class RunlaiConfigFlow(ConfigFlow, domain=DOMAIN):
             if device:
                 return self._create_entry(device)
             errors["base"] = "unknown_device"
-        names = {
-            d["deviceId"]: "%s (%s)" % (d.get("deviceName", "?"), d.get("mac", "")[:17])
-            for d in self._devices
-        }
+        names = {}
+        for d in self._devices:
+            label = d.get("deviceName", "?")
+            mac = (d.get("mac") or "").strip()
+            if mac:
+                label += " (%s)" % mac
+            names[d["deviceId"]] = label
         schema = vol.Schema({
             vol.Required(CONF_DEVICE_ID): vol.In(names),
             vol.Optional(CONF_SCAN_INTERVAL, default=DEFAULT_SCAN_INTERVAL): int,
